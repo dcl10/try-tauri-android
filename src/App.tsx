@@ -4,12 +4,14 @@ import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
 function App() {
+  const minPrimes = 1;
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
+  const [primes, setPrimes] = useState(minPrimes);
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
+    setGreetMsg(await invoke("greet", { name, primes }));
   }
 
   return (
@@ -40,6 +42,15 @@ function App() {
           id="greet-input"
           onChange={(e) => setName(e.currentTarget.value)}
           placeholder="Enter a name..."
+        />
+        <br></br>
+        <input
+          id="first-n-primes"
+          type="number"
+          min={minPrimes}
+          max={10}
+          onChange={(e) => setPrimes(Number(e.currentTarget.value))}
+          placeholder={`${minPrimes}`}
         />
         <button type="submit">Greet</button>
       </form>
