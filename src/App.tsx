@@ -31,6 +31,8 @@ function App() {
       </div>
       <p>Click on the Tauri, Vite, and React logos to learn more.</p>
 
+      <p>Use the form below to give your name and the first N prime numbers.</p>
+      <p>N must be between 1 and 10.</p>
       <form
         className="row"
         onSubmit={(e) => {

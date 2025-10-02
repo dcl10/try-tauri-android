@@ -4,11 +4,16 @@ use std::usize;
 #[tauri::command]
 fn greet(name: &str, primes: usize) -> String {
     let first_n_primes = find_primes(primes);
+    let joiner = if first_n_primes.len() == 2 {
+        " & "
+    } else {
+        ", "
+    };
     let first_n_primes_str = first_n_primes
         .into_iter()
         .map(|x| x.to_string())
         .collect::<Vec<_>>()
-        .join(", ");
+        .join(joiner);
     format!(
         "Hello, {}! You've been greeted from Rust! The first {} primes are: {}.",
         name, primes, first_n_primes_str
