@@ -45,11 +45,23 @@ fn find_primes(n: usize) -> Vec<usize> {
     primes
 }
 
+#[tauri::command]
+fn convergent_inverse_squares() -> f64 {
+    let mut sum = 0.0;
+    let max_n = 1_000_000_000;
+
+    for n in 1..=max_n {
+        sum += 1.0 / (n as f64).powi(2)
+    }
+
+    sum
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![greet, convergent_inverse_squares])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
