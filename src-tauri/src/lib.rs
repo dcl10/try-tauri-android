@@ -46,9 +46,8 @@ fn find_primes(n: usize) -> Vec<usize> {
 }
 
 #[tauri::command]
-fn convergent_inverse_squares() -> f64 {
+fn convergent_inverse_squares(max_n: usize) -> f64 {
     let mut sum = 0.0;
-    let max_n = 1_000_000_000;
 
     for n in 1..=max_n {
         sum += 1.0 / (n as f64).powi(2)

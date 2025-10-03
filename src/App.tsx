@@ -8,10 +8,19 @@ function App() {
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
   const [primes, setPrimes] = useState(minPrimes);
+  const [isLoading, setIsLoading] = useState(false);
+  const [maxN, setMaxN] = useState(Number);
+  const [converged, setConverged] = useState(0);
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
     setGreetMsg(await invoke("greet", { name, primes }));
+  }
+
+  async function converge() {
+    setIsLoading(true);
+    setConverged(await invoke("convergent_inverse_squares", { maxN }));
+    setIsLoading(false);
   }
 
   return (
@@ -57,6 +66,40 @@ function App() {
         <button type="submit">Greet</button>
       </form>
       <p>{greetMsg}</p>
+      <div>
+        <p>
+          Select a maximum N for the approximation of the sum of inverse
+          squares.
+        </p>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            converge();
+          }}
+        >
+          <label htmlFor="million">1,000,000</label>
+          <input
+            id="million"
+            type="radio"
+            name="maxN"
+            value={1000000}
+            onChange={(e) => setMaxN(Number(e.target.value))}
+          />
+          <label htmlFor="billion">1,000,000,000</label>
+          <input
+            id="billion"
+            type="radio"
+            name="maxN"
+            value={1000000000}
+            onChange={(e) => setMaxN(Number(e.target.value))}
+          />
+          <button type="submit">Calculate</button>
+        </form>
+        <div className="loader" hidden={!isLoading} />
+        <p hidden={converged === 0}>
+          The convergent sum of inverse squares is {converged}
+        </p>
+      </div>
     </main>
   );
 }
