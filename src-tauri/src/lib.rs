@@ -46,14 +46,18 @@ fn find_primes(n: usize) -> Vec<usize> {
 }
 
 #[tauri::command]
-fn convergent_inverse_squares(max_n: usize) -> f64 {
-    let mut sum = 0.0;
+async fn convergent_inverse_squares(max_n: usize) -> f64 {
+    tauri::async_runtime::spawn_blocking(move || {
+        let mut sum = 0.0;
 
-    for n in 1..=max_n {
-        sum += 1.0 / (n as f64).powi(2)
-    }
+        for n in 1..=max_n {
+            sum += 1.0 / (n as f64).powi(2)
+        }
 
-    sum
+        sum
+    })
+    .await
+    .unwrap()
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

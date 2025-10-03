@@ -9,7 +9,7 @@ function App() {
   const [name, setName] = useState("");
   const [primes, setPrimes] = useState(minPrimes);
   const [isLoading, setIsLoading] = useState(false);
-  const [maxN, setMaxN] = useState(Number);
+  const [maxN, setMaxN] = useState(0);
   const [converged, setConverged] = useState(0);
 
   async function greet() {
@@ -72,6 +72,7 @@ function App() {
           squares.
         </p>
         <form
+          className="row"
           onSubmit={(e) => {
             e.preventDefault();
             converge();
@@ -93,10 +94,12 @@ function App() {
             value={1000000000}
             onChange={(e) => setMaxN(Number(e.target.value))}
           />
-          <button type="submit">Calculate</button>
+          <button type="submit" disabled={maxN === 0}>
+            Calculate
+          </button>
         </form>
-        <div className="loader" hidden={!isLoading} />
-        <p hidden={converged === 0}>
+        {isLoading && <div className="loader" />}
+        <p hidden={converged === 0 || isLoading}>
           The convergent sum of inverse squares is {converged}
         </p>
       </div>

@@ -125,6 +125,9 @@ button {
   -webkit-animation: spin 2s linear infinite;
   /* Safari */
   animation: spin 2s linear infinite;
+
+  margin: auto;
+  display: block;
 }
 
 /* Safari */
